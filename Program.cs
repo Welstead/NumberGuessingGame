@@ -14,23 +14,28 @@ namespace NumberGuessingGame
         {
             while (running)
             {
-                try
+                GameSetup(5, 101);
+                while (lives > 0)
                 {
-                    GameSetup(5, 101);
-                    while (lives > 0)
+                    Console.WriteLine($"You have {lives} lives remaining");
+                    Console.Write("Guess the number: ");
+                    try
                     {
-                        Console.WriteLine($"You have {lives} lives remaining");
-                        Console.Write("Guess the number: ");
                         answer = Convert.ToInt32(Console.ReadLine());
                         CheckAnswer(answer);
                     }
-                    
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        lives--;
+                        
+                    }
+                    if (lives == 0)
+                    {
+                        Console.WriteLine("You're out of lives! You lose");
+                        Console.WriteLine($"The correct answer was {correctAnswer}.");
+                    }
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                
             }
         }
         public static void GameSetup(int numberOfLives , int max)
@@ -48,14 +53,8 @@ namespace NumberGuessingGame
             if (userAnswer != correctAnswer)
             {
                 lives--;
-
                 Console.WriteLine("\nWrong answer");
-                if (lives == 0)
-                {
-                    Console.WriteLine("You're out of lives! You lose");
-                    Console.WriteLine($"The correct answer was {correctAnswer}.");
-                }
-                else
+                if (lives > 0)
                 {
                     Console.WriteLine($"The correct answer is {AboveOrBelow(correctAnswer, answer).ToLower()}");
                 }
@@ -63,7 +62,7 @@ namespace NumberGuessingGame
             else if (userAnswer == correctAnswer)
             {
                 Console.WriteLine("Correct! You win");
-                lives = 0;
+                lives = -1;
             }
         }
         public static void GiveRandomHint(int correctAnswer)
