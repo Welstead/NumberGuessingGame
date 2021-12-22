@@ -4,40 +4,80 @@ namespace NumberGuessingGame
 {
     internal class Program
     {
-        private const int maxNumber = 100;
         private static Random random = new Random();
-        private static int correctAnswer = random.Next(maxNumber);
-        private static int lives = 5;
+        private static int correctAnswer;
+        private static int lives;
         private static int answer;
+        private static int hints;
+        private static bool running = true;
         static void Main(string[] args)
         {
-            
-            GiveHints(correctAnswer);
-            while (lives > 0)
+            while (running)
             {
-                Console.WriteLine($"{lives} lives remaining");
-                Console.Write("Guess the number: ");
-                answer = Convert.ToInt32(Console.ReadLine());
-                if (answer != correctAnswer)
+                try
                 {
-                    lives--;
-                    Console.WriteLine("\nWrong answer, try again!");
-                    Console.WriteLine($"The correct answer is {AboveOrBelow(correctAnswer, answer).ToLower()}");
+                    GameSetup(5, 101);
+                    while (lives > 0)
+                    {
+                        Console.WriteLine($"You have {lives} lives remaining");
+                        Console.Write("Guess the number: ");
+                        answer = Convert.ToInt32(Console.ReadLine());
+                        CheckAnswer(answer);
+                    }
                     
                 }
-                else if(answer == correctAnswer)
+                catch (Exception e)
                 {
-                    Console.WriteLine("Correct! You win");
-                    lives = 0;
+                    Console.WriteLine(e.Message);
+                }
+                
+            }
+        }
+        public static void GameSetup(int numberOfLives , int max)
+        {
+            Console.WriteLine("---------");
+            Console.WriteLine("New Game");
+            Console.WriteLine("---------");
+            correctAnswer = random.Next(1,max);
+            GiveRandomHint(correctAnswer);
+            lives = numberOfLives;
+        }
+        public static void CheckAnswer(int userAnswer)
+        {
+            
+            if (userAnswer != correctAnswer)
+            {
+                lives--;
+
+                Console.WriteLine("\nWrong answer");
+                if (lives == 0)
+                {
+                    Console.WriteLine("You're out of lives! You lose");
+                    Console.WriteLine($"The correct answer was {correctAnswer}.");
+                }
+                else
+                {
+                    Console.WriteLine($"The correct answer is {AboveOrBelow(correctAnswer, answer).ToLower()}");
                 }
             }
-            Console.WriteLine($"The correct answer was {correctAnswer}.");
-
+            else if (userAnswer == correctAnswer)
+            {
+                Console.WriteLine("Correct! You win");
+                lives = 0;
+            }
         }
-        public static void GiveHints(int correctAnswer)
+        public static void GiveRandomHint(int correctAnswer)
         {
-            Console.WriteLine(EvenOrOdd(correctAnswer));
-            Console.WriteLine(AboveOrBelow(correctAnswer, 50));
+            Console.Write("The correct answer is ");
+            hints = random.Next(0,2);
+            if (hints == 0)
+            {
+                Console.WriteLine(EvenOrOdd(correctAnswer));
+            }
+            else if (hints == 1)
+            {
+                Console.WriteLine(AboveOrBelow(correctAnswer, 50));
+            }
         }
         public static string EvenOrOdd(int correctAnswer)
         {
