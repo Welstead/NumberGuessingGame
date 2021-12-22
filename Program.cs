@@ -30,11 +30,11 @@ namespace NumberGuessingGame
                         lives--;
                         
                     }
-                    if (lives == 0)
-                    {
-                        Console.WriteLine("You're out of lives! You lose");
-                        Console.WriteLine($"The correct answer was {correctAnswer}.");
-                    }
+                }
+                if (lives == 0)
+                {
+                    Console.WriteLine("You're out of lives! You lose");
+                    Console.WriteLine($"The correct answer was {correctAnswer}.");
                 }
             }
         }
