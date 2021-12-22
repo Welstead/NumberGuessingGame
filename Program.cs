@@ -14,7 +14,9 @@ namespace NumberGuessingGame
         {
             while (running)
             {
+                
                 GameSetup(5, 101);
+                
                 while (lives > 0)
                 {
                     Console.WriteLine($"You have {lives} lives remaining");
@@ -69,7 +71,7 @@ namespace NumberGuessingGame
         {
             Console.Write("The correct answer is ");
             hints = random.Next(0,2);
-            if (hints == 0)
+            if (hints == 0 || correctAnswer == 50)
             {
                 Console.WriteLine(EvenOrOdd(correctAnswer));
             }
